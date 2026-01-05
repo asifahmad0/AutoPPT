@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
-import "dotenv/config";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+const express = require( "express");
+const cors = require( "cors");
+const dotenv = require("dotenv/config");
+const { GoogleGenerativeAI } = require( "@google/generative-ai");
 
 const app = express();
 app.use(cors());
