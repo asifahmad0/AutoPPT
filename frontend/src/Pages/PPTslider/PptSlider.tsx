@@ -58,6 +58,30 @@ function PptSlider() {
     }
   }, [projectDetail]);
 
+
+
+const GenerateSlide = async () => {
+  if (!projectDetail) return;
+
+  const res = await fetch("http://localhost:4000/generate-slide", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      designStyle: projectDetail.designStyle?.designGuide,
+      colors: projectDetail.designStyle?.color,
+      metadata: projectDetail.outline?.[0]
+    }),
+  });
+
+  const data = await res.json();
+  setSlider([{ code: data.html }]);
+};
+
+
+
+
+  
+/*
   const GenerateSlide = async () => {
     const prompt = imageGeneratePrompt
       .replace("{DESIGN_STYLE}", projectDetail?.designStyle?.designGuide ?? "")
@@ -114,6 +138,7 @@ function PptSlider() {
     }
   };
   //GenerateSlide()
+  */
 
   return (
     <div className=" w-full grid grid-cols-5 p-5">
