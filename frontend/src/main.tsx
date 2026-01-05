@@ -13,6 +13,7 @@ import  OutlineIndex from "./Pages/outline/Outline.tsx";
 import Contact from "./Pages/contact/Contact.tsx";
 import Footer from "./Pages/Footer.tsx";
 import About from "./Pages/about/About.tsx";
+import PptSlider from "./Pages/PPTslider/PptSlider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "project/:ProjectID/outline",
         element: <OutlineIndex />,
+      },
+      {
+        path:'project/:ProjectID/pptslider',
+        element: <PptSlider/>
       },
     ],
   },

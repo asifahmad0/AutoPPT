@@ -1,12 +1,13 @@
 import SliderSlyle, { type DesignStyle } from '@/Pages/outline/SliderSlyle'
 import { firebaseDb } from '../../../config/FirebaseConfig'
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { doc, getDoc, setDoc,} from 'firebase/firestore'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import OutlineSection from '@/Pages/outline/OutlineSection'
 import { GeminAiModel } from '../../../config/FirebaseConfig'
-import { Loader, LoaderCircle, Merge, Sparkle } from 'lucide-react'
+import {  LoaderCircle, Sparkle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { toast, ToastContainer} from 'react-toastify'
 
 
 
@@ -16,18 +17,20 @@ export type Outline={
   outline:string,
  }
 
- type Project ={
+ export type Project ={
   userPrompt:string,
   projectID:string,
   createdAt:string,
   noOfSlide:string,
-  Outline:Outline[],
+  outline:Outline[],
   designStyle:DesignStyle,
+  slides:any[],
  }
+
 function OutlineIndex() {
 
 
- //------------------------------------------------------------------------get Project data from Firebase
+ //------------------------------------------------------------------------ All Variebles
 
   const {ProjectID} = useParams()
   const [projectDetail, setProjectDetail]= useState<any> ()
@@ -35,6 +38,7 @@ function OutlineIndex() {
   const [outline, setOutline]= useState<Outline[]>()
   const [ selectStyle, setSelectStyle] = useState<DesignStyle>()
   const [genratePPTLoding, setGenratePPTLoding] = useState(false)
+  const navigate = useNavigate()
 
 
 
@@ -44,7 +48,7 @@ function OutlineIndex() {
     ProjectID && getProject()
    },[ProjectID])
 
-  
+  //------------------------------------------------------------------------get Project data from Firebase
    const getProject= async ()=>{
     
     const docRef = doc(firebaseDb, 'projects', ProjectID??'');
@@ -60,6 +64,8 @@ function OutlineIndex() {
     console.log(docSnap.data())
     if (!docSnap.data().outline){
     genrateSlidersOtline(docSnap.data())
+  }else{
+    setOutline(docSnap.data().outline)
   }
 
    }
@@ -120,11 +126,12 @@ function OutlineIndex() {
    }
 
    const onGenratSlider=async()=>{
-
     setGenratePPTLoding(true)
     // update DB
 
-    await setDoc(doc(firebaseDb, 'projects', ProjectID??''),{
+    if(selectStyle){
+      
+      await setDoc(doc(firebaseDb, 'projects', ProjectID??''),{
 
       designStyle: selectStyle,
       outline:outline
@@ -132,8 +139,15 @@ function OutlineIndex() {
     },{
        merge:true
     })
+    
+    }else{
+           toast(' Pleace select PPT theam ')
+    }
+     
     setGenratePPTLoding(false)
+    
     // navigate to slider editing page
+    navigate('/work/project/'+ProjectID+'/outline')
 
    }
 
@@ -141,6 +155,7 @@ function OutlineIndex() {
 
   return (
     <section className="flex justify-center mt-20 mb-5 p-3 relative ">
+      <ToastContainer/>
 
       <div className="max-w-2xl w-full">
         <h2 className="font-bold text-2xl">
@@ -152,7 +167,8 @@ function OutlineIndex() {
         <OutlineSection loading={loading} outline={outline|| []}
         hendleUpdateOutline={(index:string, value:Outline)=>hendleUpdateOutline(index,value)} />
       </div>
-      <Button size={'lg'} className='bg-[crimson] text-white absolute bottom-[0]' onClick={()=>onGenratSlider()}>{ genratePPTLoding ? <LoaderCircle className='animate-spin'/> :'Create PPT '+ <Sparkle/>} </Button>
+      <Button size={'lg'} className='bg-[crimson] text-white absolute bottom-[0]' onClick={()=>onGenratSlider()}>
+        { genratePPTLoding ? <LoaderCircle className='animate-spin'/> :`Create PPT`}<Sparkle className={`${genratePPTLoding ? 'hidden' :`block`}`}/> </Button>
       
     </section>
   )

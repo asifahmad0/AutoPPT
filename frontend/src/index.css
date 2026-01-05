@@ -2,6 +2,13 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+@theme{
+  --color-primery:rgb(220 20 60);
+  --color-secondery:;
+}
+
+
 :root {
   scroll-behavior: smooth;
 
@@ -43,6 +50,11 @@ overflow-x: hidden;
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067); */
 }
+
+
+
+
+
 body{
   overflow-x: hidden;
 }

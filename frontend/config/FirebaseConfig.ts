@@ -1,8 +1,15 @@
+/*
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+<<<<<<< HEAD
 import { getFirestore } from "firebase/firestore";
 import { getAI, getGenerativeModel, GoogleAIBackend } from "firebase/ai";
+=======
+import { getFirestore } from "firebase/firestore"
+import { getAI, getGenerativeModel, getLiveGenerativeModel, GoogleAIBackend, ResponseModality } from "firebase/ai";
+>>>>>>> acc5959 (adding backend)
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -30,3 +37,20 @@ const ai = getAI(app, { backend: new GoogleAIBackend() });
 
 // Create a `GenerativeModel` instance with a model that supports your use case
 export const GeminAiModel = getGenerativeModel(ai, { model: "gemini-2.5-flash" });
+
+// Create a `LiveGenerativeModel` instance with a model that supports the Live API
+export const GeminAiLiveModel = getLiveGenerativeModel(ai, {
+  model: "gemini-2.5-flash",
+  // Configure the model to respond with audio
+  generationConfig: {
+    responseModalities: [ResponseModality.TEXT],
+  },
+});
+
+// Initialize the Gemini Developer API backend service
+const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
+
+// Create a `GenerativeModel` instance with a model that supports your use case
+const model = getGenerativeModel(ai, { model: "gemini-2.5-flash" });
+
+*/

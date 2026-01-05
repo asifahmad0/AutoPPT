@@ -21,7 +21,7 @@ function OutlineSection({loading, outline, hendleUpdateOutline}:Props) {
             loading &&
             <div>
                 {
-                    [1,2,3,4].map((index)=>(
+                    [1,2,3,4,5,6].map((index)=>(
                         <Skeleton key={index} className='h-[60px] bg-gray-500 w-full rounded-2xl my-5'/>
                     ))
                 }
