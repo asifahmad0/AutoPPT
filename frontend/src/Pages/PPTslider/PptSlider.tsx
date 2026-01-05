@@ -152,10 +152,17 @@ const GenerateSlide = async () => {
 
       <div className=" border border-blue-700 cols-span-2">
         {slider.map((slide: any, index:number)=>{
-          <SliderCardFrame slide={slide} key={index} colors={projectDetail?.designStyle?.color ?? ''}/>
+          <SliderCardFrame 
+          slide={slide} 
+          key={index} 
+          colors={projectDetail?.designStyle?.color ?? ''}/>
         })}
-        </div>
-    </div>
+      </div>
+  
+  
+  
+  </div>
+
   );
 }
 
