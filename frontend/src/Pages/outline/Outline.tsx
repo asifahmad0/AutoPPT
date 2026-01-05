@@ -147,7 +147,7 @@ function OutlineIndex() {
     setGenratePPTLoding(false)
     
     // navigate to slider editing page
-    navigate('/work/project/'+ProjectID+'/outline')
+    navigate('/work/project/'+ProjectID+'/pptslider')
 
    }
 

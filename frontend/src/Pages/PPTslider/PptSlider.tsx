@@ -29,7 +29,7 @@ function PptSlider() {
     }
 
     setProjectDetail(docSnap.data());
-    console.log(docSnap.data());
+    //console.log(docSnap.data());
     if (!docSnap.data().outline) {
       docSnap.data();
     } else {
@@ -75,6 +75,7 @@ const GenerateSlide = async () => {
 
   const data = await res.json();
   setSlider([{ code: data.html }]);
+  console.log(data.html)
 };
 
 
