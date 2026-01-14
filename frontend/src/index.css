@@ -7,10 +7,14 @@
   --color-primery:rgb(220 20 60);
   --color-secondery:;
 }
-
+*::-webkit-scrollbar{
+  display: none;
+  
+}
 
 :root {
   scroll-behavior: smooth;
+
 
 overflow-x: hidden;
   font-synthesis: none;

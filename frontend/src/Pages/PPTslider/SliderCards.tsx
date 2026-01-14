@@ -1,6 +1,8 @@
 
-import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Save } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react'
+
 
 
 
@@ -85,7 +87,6 @@ function SliderCards({slide,colors }:Props) {
         .replace("{code}", slide?.code);
 
     const iframeRef = useRef<any>(null);
-    const [loading, setLoading] = useState(false);
     const selectedElRef = useRef<HTMLElement | null>(null);
     const [cardPosition, setCardPosition] = useState<{ x: number, y: number } | null>(null)
     
@@ -187,10 +188,12 @@ function SliderCards({slide,colors }:Props) {
             doc.body?.removeEventListener("keydown", handleKeyDown);
         };
 
-        console.log("its working ")
-        console.log(slide)
+        
     }, []);
 
+
+
+    
 
     
 
@@ -198,9 +201,11 @@ function SliderCards({slide,colors }:Props) {
         <div className='mb-5'>
             <iframe
                 ref={iframeRef}
-                className="w-[800px] h-[500px] border-0 rounded-2xl"
-                sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups" // ✅ full sandbox permissions
-            />
+                className="w-[68dvw] h-[600px] border-0 rounded-2xl border"
+                sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups" // ✅ full sandbox permissions 
+                 />
+
+            
 
 
             {/* <FloatingActionTool position={cardPosition}
