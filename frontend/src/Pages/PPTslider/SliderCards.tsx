@@ -204,6 +204,15 @@ function SliderCards({slide,colors }:Props) {
                 className="w-[68dvw] h-[600px] border-0 rounded-2xl border"
                 sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups" // ✅ full sandbox permissions 
                  />
+
+            
+
+
+            {/* <FloatingActionTool position={cardPosition}
+                onClose={() => setCardPosition(null)}
+                loading={loading}
+                handleAiChange={(value: string) => handleAiSectionChange(value)}
+            />  */}
         </div>
     );
 }

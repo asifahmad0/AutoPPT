@@ -16,7 +16,6 @@ function PptSlider() {
   const [outline, setOutline] = useState<Outline[]>();
   const [genratePPTLoding, setGenratePPTLoding] = useState(false);
   const [sliderSaveLoder, setSliderSaveLoder]= useState( false)
-  const [selectedSlideIndex, setSelectedSlideIndex] = useState<number | null>(null);
 
 
 
@@ -152,10 +151,8 @@ console.log(slider);
           <SliderCards
             key={index}
             slide={slide}
-            colors={projectDetail?.designStyle?.color ?? {} }
-            //onSelect={() => setSelectedSlideIndex(index)}
+            colors={projectDetail?.designStyle?.color ?? {}}
           />
-
         )))}
       </div>
 
