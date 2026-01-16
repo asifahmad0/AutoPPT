@@ -11,7 +11,7 @@ import Project from './Project.tsx';
 function Workspace() {
 
   const {user, isSignedIn, isLoaded}= useUser()
-  const { userDetail, setUserDetail } = useContext(UserDetailContext)
+  const {setUserDetail } = useContext(UserDetailContext)
   const location = useLocation()
 
 

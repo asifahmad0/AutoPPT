@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FC } from "react";
 import "aos/dist/aos.css";
-import AOS from 'aos';
-import video1 from '../../assets/foodSector.mp4'
-import image1 from '../../assets/image3.jpg'
+import AOS from "aos";
 
 const VideoSec: FC = () => {
 

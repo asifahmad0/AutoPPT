@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {  Loader2 } from "lucide-react";
 import PptxGenJS from "pptxgenjs";
 import * as htmlToImage from 'html-to-image';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import PptSlideSkeleton from "./PptSlideSkeleton";
 
 

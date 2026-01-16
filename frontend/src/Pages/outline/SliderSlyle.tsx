@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import GeometricImg from '../../assets/Geometric.jpg'
 import ElegantClean from '../../assets/Elegant_Clean.jpg'

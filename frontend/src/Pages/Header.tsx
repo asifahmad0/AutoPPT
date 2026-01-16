@@ -1,10 +1,8 @@
-import React, { useContext } from 'react'
-import propic from '../assets/my photo.jpg'
+import { useContext } from 'react'
 import { SignInButton, UserButton, useUser } from '@clerk/clerk-react'
 import { Button } from '@/components/ui/button'
 import { Gem } from 'lucide-react'
 import { UserDetailContext } from '../../context/UserDetailContext'
-import { useLocation, useParams } from 'react-router-dom'
 
 function Header() {
 

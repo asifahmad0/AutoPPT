@@ -1,8 +1,8 @@
-import React from 'react'
+
 import { Skeleton } from "../../components/ui/skeleton"
 import type { Outline } from '@/Pages/outline/Outline'
 import { Button } from '../../components/ui/button'
-import { Edit, Sparkle } from 'lucide-react'
+import { Edit} from 'lucide-react'
 import EditOutlineDialog from './EditOutlineDialog'
 
 type Props ={

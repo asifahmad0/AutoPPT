@@ -1,8 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { SignInButton, useUser } from '@clerk/clerk-react'
 import { Video } from 'lucide-react'
-import React from 'react'
-import { Link } from 'react-router-dom'
 
 function Home() {
   
