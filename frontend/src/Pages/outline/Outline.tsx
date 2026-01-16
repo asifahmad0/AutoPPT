@@ -25,6 +25,7 @@ export type Outline={
   outline:Outline[],
   designStyle:DesignStyle,
   slides:any[],
+  slides_html:any,
  }
 
 function OutlineIndex() {

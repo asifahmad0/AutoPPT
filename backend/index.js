@@ -7,24 +7,37 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+
+//------------------------------------------------------------------------Generate PPT----------------------------------------------
+
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.post("/generate-presentation", async (req, res) => {
   try {
-    const { designStyle, colors, outline } = req.body;
+    const { designStyle, colors, outline, userPrompt } = req.body;
 
     if (!outline || !outline.length) {
       return res.status(400).json({ error: "Outline missing" });
     }
 
     const model = ai.getGenerativeModel({
-      model: "gemini-3-flash-preview", // ✅ STABLE
+      model: "gemini-3-flash-preview",
     });
-
+// Generte image if needed using:
+// 'https://ik.imagekit.io/m5tbjdhwo/ik-genimg-prompt-{imagePrompt}/{altImageName}.jpg'
     const prompt = `
 You are a professional presentation + web designer.
 
 Generate a presentation with EXACTLY ${outline.length} slides.
+
+Generate pure HTML with inline CSS only.
+Do NOT use:
+- Flowbite
+- Swiper
+- AOS
+- External CSS
+- External fonts
 
 Rules:
 - Output ONLY valid JSON
@@ -35,7 +48,9 @@ Rules:
 - Do NOT include <html>, <head>, <body>
 - Use 16:9 layout
 - All slides same width & height
-- Modern dark UI
+- Modern dark/light UI
+- Consistent width & height for ALL slides
+- Return ONLY valid JSON
 
 Design style:
 ${designStyle}
@@ -61,8 +76,26 @@ JSON FORMAT:
     const result = await model.generateContent(prompt);
     const text = result.response.text();
 
-    const clean = text.replace(/```json|```/g, "").trim();
-    const json = JSON.parse(clean);
+    function extractJSON(text) {
+      const first = text.indexOf("{");
+      const last = text.lastIndexOf("}");
+      if (first === -1 || last === -1) {
+        throw new Error("No JSON found in AI response");
+      }
+      return text.substring(first, last + 1);
+    }
+
+    const raw = result.response.text();
+    const jsonString = extractJSON(raw);
+
+    let json;
+    try {
+      json = JSON.parse(jsonString);
+    } catch (e) {
+      console.error("Invalid JSON from AI:", jsonString);
+      throw e;
+    }
+    extractJSON(text);
 
     res.json(json);
   } catch (err) {
@@ -70,8 +103,6 @@ JSON FORMAT:
     res.status(500).json({ error: "AI generation failed" });
   }
 });
-
-
 
 
 

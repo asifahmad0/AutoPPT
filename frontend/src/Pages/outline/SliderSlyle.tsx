@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import GeometricImg from '../../assets/Geometric.jpg'
 import ElegantClean from '../../assets/Elegant_Clean.jpg'
 import mediumWhiteImg from '../../assets/minimal_white.jpg'
-import CreativeModernImg from '../../assets/image3.jpg'
-import EducationalImg from '../../assets/image3.jpg'
+import CreativeModernImg from '../../assets/CM.jpg'
+import EducationalImg from '../../assets/edu.jpg'
 import CorporateImg from '../../assets/Corporate.jpg'
 
 
@@ -42,9 +42,9 @@ const Slide_Design=[
     {
         'styleName':'Creative/Modern',
         'color':{
-            'primry':'#FF6347',
-            'secondery':'#32CD32',
-            'third':'#2C3E50'
+            'primry':'#ffffff',
+            'secondery':'#ec3a1a',
+            'third':'#ff821b'
         },
         'designGuide':'Suitable for creative agencies, marketing pitches, or personal projects where style is crucial.',
         'bannerImage':CreativeModernImg
@@ -52,9 +52,10 @@ const Slide_Design=[
     {
         'styleName':'Educational',
         'color':{
-            'primry':'#98FF98',
-            'secondery':'#ADD8E6',
-            'third':'#333333',
+            'primry':' #ffffff',
+            'secondery':' #dae030',
+            'third':'#27e1ac',
+            'forth':'#FF6347',
         },
         'designGuide':'Prioritizes clear hierarchy and straightforward content organization (e.g., the 7-7-7 rule for text)',
         'bannerImage':EducationalImg
@@ -89,7 +90,6 @@ function SliderSlyle({SelectSlideStyle}:Props) {
 
 
     const [selectedSlide, setSeledSlide]=useState<string>()
-
 
 
 

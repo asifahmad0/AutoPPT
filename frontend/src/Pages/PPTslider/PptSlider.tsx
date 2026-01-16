@@ -1,12 +1,17 @@
 import { firebaseDb } from "../../../config/FirebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Project, Outline } from "../outline/Outline";
 import OutlineSection from "../outline/OutlineSection";
 import SliderCards from "./SliderCards";
 import { Button } from "@/components/ui/button";
-import { Loader, Loader2 } from "lucide-react";
+import {  Loader2 } from "lucide-react";
+import PptxGenJS from "pptxgenjs";
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+import PptSlideSkeleton from "./PptSlideSkeleton";
+
 
 
 function PptSlider() {
@@ -35,10 +40,8 @@ function PptSlider() {
       return;
     }
 
-    setProjectDetail(docSnap.data());
-    //console.log(docSnap.data());
     if (!docSnap.data().outline) {
-      docSnap.data();
+      console.log(docSnap.data());
     } else {
       setOutline(docSnap.data().outline);
       setProjectDetail(docSnap.data());
@@ -55,12 +58,20 @@ function PptSlider() {
 //---------------------------------------------------------------------------------slide data sending to backend for generate slide 
 const [slider, setSlider] = useState<any>([]);
 
-  useEffect(() => {
-    if (projectDetail && projectDetail.outline?.length) {
-      GenerateSlide();
-    }
-  }, [projectDetail]);
+  
 
+  useEffect(() => {
+  const slidaar = projectDetail?.slides_html;
+
+  if (!slidaar || slidaar.length === 0) {
+    GenerateSlide();
+  } else {
+    setSlider(
+      slidaar
+    );
+    
+  }
+}, [projectDetail]);
 
 
 const GenerateSlide = async () => {
@@ -76,6 +87,7 @@ const GenerateSlide = async () => {
           designStyle: projectDetail.designStyle?.designGuide,
           colors: projectDetail.designStyle?.color,
           outline: projectDetail.outline,
+          userPrompt: projectDetail.userPrompt,
         }),
       });
 
@@ -108,7 +120,7 @@ const GenerateSlide = async () => {
 
  
 
-console.log(slider);
+//console.log(slider);
 
 
 
@@ -134,10 +146,59 @@ console.log(slider);
     setSliderSaveLoder(false)
   
 };
-//------------------------------------------------------------- end-------------------------------------------------------
+
+
+
+//-------------------------------------------------------------Export PPT-------------------------------------------------------
+
+const containerRef = useRef<HTMLDivElement | null>(null)
+const [downloadLoding, setDownloadLoding] = useState(false)
+
+const exportPPT= async()=> {
+  
+  if (!containerRef.current) return;
+  setDownloadLoding(true)
+  const pptx = new PptxGenJS()
+  const iframes =containerRef.current.querySelectorAll("iframe")
+  console.log(iframes)
+  for (let i =0; i<iframes.length; i++){
+    const iframe = iframes[i] as HTMLIFrameElement;
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (!iframeDoc) continue;
+
+    const slideNode = 
+    (iframeDoc.querySelector("body > div") as HTMLElement) || (iframeDoc.body as HTMLElement);
+    if (!slideNode) continue;
+    console.log(`Exporting slide ${i + 1}...`);
+    const dataUrl = await htmlToImage.toPng(slideNode, {quality:1})
+
+    const slide = pptx.addSlide()
+    slide.addImage({
+      data: dataUrl,
+      x: 0,
+      y: 0,
+      w: 10,
+      h: 5.625,
+    });
+    console.log(slide)
+  }
+  
+  setDownloadLoding(false)
+  pptx.writeFile({fileName:"MyProjectPPT.pptx"})
+}
+
+
+
+
+
+
+
+
+
+
 
   return (
-    <div className=" w-full flex lg:flex-row flex-col p-5">
+    <div className=" w-full flex lg:flex-row flex-col p-5 ">
       <div className=" lg:w-[30dvw] h-screen overflow-y-scroll p-2 -my-10">
         <OutlineSection
           outline={projectDetail?.outline ?? []}
@@ -146,8 +207,12 @@ console.log(slider);
         />
       </div>
 
-      <div className="lg:w-[70dvw] h-screen overflow-scroll p-2">
-        {genratePPTLoding? <Loader/> :(slider.map((slide: any, index: number) => (
+      <div className="lg:w-[70dvw] w-[100dvw] h-screen overflow-scroll p-2 " ref={containerRef}>
+        { genratePPTLoding? (
+    Array.from({ length: 5 }).map((_, i) => (
+      <PptSlideSkeleton key={i} />
+    ))
+  ) :(slider.map((slide: any, index: number) => (
           <SliderCards
             key={index}
             slide={slide}
@@ -156,17 +221,25 @@ console.log(slider);
         )))}
       </div>
 
-       <Button
-  className="fixed bottom-5 left-[40%] bg-primery flex items-center gap-2"
-  onClick={saveSlideToFirebase}
-  disabled={sliderSaveLoder}
->
-  {sliderSaveLoder ? (
-    <Loader2 className="animate-spin" />
-  ) : (
-    "Save PPT"
-  )}
-</Button>
+       <div className="btn absolute -bottom-30 left-[40%]  flex items-center gap-10 ">
+        <Button
+               className=" bg-primery text-textColor hover:scale-105"
+               onClick={saveSlideToFirebase}
+               disabled={sliderSaveLoder}>
+               {sliderSaveLoder ? ( <Loader2 className="animate-spin" /> ) : ( "Save PPT" )} 
+        </Button>
+
+        <Button
+               className=" border border-primery text-textColor2 hover:scale-105 hover:bg-primery hover:text-textColor"
+               onClick={exportPPT}
+               disabled={sliderSaveLoder}>
+               {downloadLoding ? ( <Loader2 className="animate-spin" /> ) : ( "Export PPT" )} 
+        </Button>
+
+        
+       
+       </div>
+       
     </div>
   );
 }

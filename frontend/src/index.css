@@ -6,6 +6,8 @@
 @theme{
   --color-primery:rgb(220 20 60);
   --color-secondery:;
+  --color-textColor:white;
+  --color-textColor2:black;
 }
 *::-webkit-scrollbar{
   display: none;
