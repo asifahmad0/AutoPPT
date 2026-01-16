@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button'
-import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+
+import { Link} from 'react-router-dom'
 
 import {
   Empty,
@@ -15,7 +15,6 @@ import { ArrowRight, FolderIcon } from 'lucide-react'
 
 function Project() {
 
-  const { projectID }= useParams()  
 
   {/* projectID is Same Name jo nested route me likha he or useParame ka kame he URL me se jo 
     projectID je use nikalna or store karna lekin url me jobhi id aaye wo route me wahi name

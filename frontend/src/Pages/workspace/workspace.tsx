@@ -1,5 +1,5 @@
 import { useUser } from '@clerk/clerk-react';
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { firebaseDb} from "../../../config/FirebaseConfig.ts"
 import { doc, getDoc, setDoc } from 'firebase/firestore';

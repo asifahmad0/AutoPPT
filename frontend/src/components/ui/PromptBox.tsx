@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button } from './button'
-import { Loader, ArrowUpIcon, LoaderCircle, Send, } from 'lucide-react'
-import Project from '@/Pages/workspace/Project'
+import { ArrowUpIcon, LoaderCircle, } from 'lucide-react'
 import { v4 as uuidv4 } from 'uuid';
 import { doc, setDoc } from 'firebase/firestore';
 import { firebaseDb } from '../../../config/FirebaseConfig';
@@ -16,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select"
-import { Value } from '@radix-ui/react-select';
 
 
 
