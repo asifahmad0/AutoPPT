@@ -20,6 +20,8 @@ function PptSlider() {
   const [outline, setOutline] = useState<Outline[]>();
   const [genratePPTLoding, setGenratePPTLoding] = useState(false);
   const [sliderSaveLoder, setSliderSaveLoder]= useState( false)
+  const [isRegenerating, setIsRegenerating] = useState(false);
+
 
 
 
@@ -54,7 +56,7 @@ function PptSlider() {
 
 
 
-//---------------------------------------------------------------------------------slide data sending to backend for generate slide 
+//---------------------------------------------------------for generate slide by sending slide data to backend  
 const [slider, setSlider] = useState<any>([]);
 
   
@@ -79,7 +81,7 @@ const GenerateSlide = async () => {
     setGenratePPTLoding(true);
 
     try {
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL+"generate-presentation", {
+      const res = await fetch(import.meta.env.VITE_BACKEND_URL+"generate-presentation", { //https://autoppt-iain.onrender.com/
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -103,36 +105,43 @@ const GenerateSlide = async () => {
         return;
       }
 
-      setSlider(
-        data.slides.map((s: any) => ({
-          code: s.html,
-          title: s.title,
-        }))
-      );
-    } catch (err) {
-      console.error("GenerateSlide failed:", err);
-    } finally {
-      setGenratePPTLoding(false);
-    }
-     console.log(slider);
-  };
+      const slidesData = data.slides.map((s: any) => ({
+      code: s.html,
+      title: s.title,
+    }));
+
+    // ✅ UI ke liye
+    setSlider(slidesData);
+
+    // ✅ DIRECT Firebase save (no timing issue)
+    await saveSlideToFirebase(slidesData);
+
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setGenratePPTLoding(false);
+    setIsRegenerating(false);
+  }
+};
 
  
-
-//console.log(slider);
+const handleRegenerate = () => {
+  setIsRegenerating(true);
+  GenerateSlide();
+};
 
 
 
 // ----------------------------------------------------------- Slide save to firebase ---------------------------------------
 
-  const saveSlideToFirebase = async () => {
+  const saveSlideToFirebase = async (slidesData: any[]) => {
 
     setSliderSaveLoder(true)
     try{
       const docRef = doc(firebaseDb, "projects", ProjectID!);
 
   await setDoc(docRef, {
-    [`slides_html`]: slider,
+    [`slides_html`]: slidesData,
     updatedAt: Date.now(),
   },{
     merge:true
@@ -142,9 +151,11 @@ const GenerateSlide = async () => {
     } catch(e){
          console.log("error: ", e)
     }
-    setSliderSaveLoder(false)
+    setSliderSaveLoder(false);
   
 };
+
+
 
 
 
@@ -191,11 +202,6 @@ const exportPPT= async()=> {
 
 
 
-
-
-
-
-
   return (
     <div className=" w-full flex lg:flex-row flex-col p-5 ">
       <div className=" lg:w-[30dvw] h-screen overflow-y-scroll p-2 -my-10">
@@ -222,17 +228,25 @@ const exportPPT= async()=> {
 
        <div className="btn absolute -bottom-30 left-[40%]  flex items-center gap-10 ">
         <Button
-               className=" bg-primery text-textColor hover:scale-105"
-               onClick={saveSlideToFirebase}
-               disabled={sliderSaveLoder}>
-               {sliderSaveLoder ? ( <Loader2 className="animate-spin" /> ) : ( "Save PPT" )} 
+           className=" bg-primery text-textColor hover:scale-105"
+           onClick={
+             slider?.length > 0
+               ? handleRegenerate
+               : GenerateSlide
+           }
+           disabled={genratePPTLoding || sliderSaveLoder} >
+
+           {genratePPTLoding ? ( <Loader2 className="animate-spin" />) 
+           : slider?.length > 0 ? ("Regenerate PPT") 
+           : ( "Generate PPT")}
         </Button>
+
 
         <Button
                className=" border border-primery text-textColor2 hover:scale-105 hover:bg-primery hover:text-textColor"
                onClick={exportPPT}
                disabled={sliderSaveLoder}>
-               {downloadLoding ? ( <Loader2 className="animate-spin" /> ) : ( "Export PPT" )} 
+               {downloadLoding ? ( <Loader2 className="animate-spin" /> ) : ( "Download PPT" )} 
         </Button>
 
         

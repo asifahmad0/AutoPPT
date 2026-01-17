@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { SignInButton, useUser } from '@clerk/clerk-react'
 import { Video } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 function Home() {
   
@@ -23,7 +24,9 @@ function Home() {
         
         { !user ?
         <SignInButton mode='modal'>
+          <Link to={"/work"}>
         <Button className='border py-2 px-5 hover:text-black hover:bg-[transparent] bg-[crimson]'>Get Start</Button>
+        </Link>
         </SignInButton>
         :<Button className='border py-2 px-5 hover:text-black hover:bg-[transparent] bg-[crimson]'><a href="/work">Get Start</a></Button>
         }

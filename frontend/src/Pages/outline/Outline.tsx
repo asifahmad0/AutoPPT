@@ -20,7 +20,7 @@ export type Outline={
  export type Project ={
   userPrompt:string,
   projectID:string,
-  createdAt:string,
+  createdAT:string,
   noOfSlide:string,
   outline:Outline[],
   designStyle:DesignStyle,
