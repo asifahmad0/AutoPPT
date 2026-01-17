@@ -68,10 +68,8 @@ function OutlineIndex() {
   }else{
     setOutline(docSnap.data().outline)
   }
-
+console.log(projectDetail)
    }
-
-
   
 
  //------------------------------------------------------------------ Using PPT AI by sending prompt and genrating sliders
@@ -109,7 +107,7 @@ function OutlineIndex() {
 
   const response = result.response;
   const text = response.text();
-  console.log(text);
+  //console.log(text);
   const rowJSON = text.replace('```json','')
   .replace('```','')
   const JSONdata= JSON.parse(rowJSON)
