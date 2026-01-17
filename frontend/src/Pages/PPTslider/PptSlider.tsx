@@ -32,7 +32,7 @@ function PptSlider() {
 
   const getProject = async () => {
     setLoding(true);
-    console.log(outline,isRegenerating)
+    
 
     const docRef = doc(firebaseDb, "projects", ProjectID ?? "");
     const docSnap: any = await getDoc(docRef);

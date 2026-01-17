@@ -62,13 +62,13 @@ function OutlineIndex() {
     }
 
     setProjectDetail(docSnap.data())
-    console.log(docSnap.data())
+    
     if (!docSnap.data().outline){
     genrateSlidersOtline(docSnap.data())
   }else{
     setOutline(docSnap.data().outline)
   }
-console.log(projectDetail)
+
    }
   
 
