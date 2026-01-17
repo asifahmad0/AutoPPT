@@ -28,7 +28,7 @@ function ProjectSec() {
   const[project, setProject]= useState<Project[]>([])
   const {user} = useUser()
   const [PptId, setPptId]= useState<any>([])
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
 
 
   useEffect(()=>{
@@ -43,20 +43,14 @@ function ProjectSec() {
 
   querySnapshot.forEach((doc:any) => {
      // doc.data() is never undefined for query doc snapshots
-     console.log(doc.id, " => ", doc.data());
+     //console.log(doc.id, " => ", doc.data());
      setProject((prev:any)=>[...prev, doc.data()])
      setPptId((prev:any)=>[...prev, doc.id])
 
   });
   }
 
-const openPpt=(pptId:any)=>{
-    console.log(pptId)
 
-    
-navigate('/work/project/'+pptId+'/pptslider')
-
-  }
   
 const PptDate=(timeStrap:any)=>{
   const date= moment(timeStrap).fromNow();
@@ -75,19 +69,20 @@ const PptDate=(timeStrap:any)=>{
 
       
 
-      {project.length>0? (
+      {project.length >0? (
               <div className="p-2 lg:p-5 w-screen grid grid-cols-2 lg:grid-cols-4 gap-1 lg:gap-5 ">
-                {project.map((items, index)=>(
-                  <div onClick={()=>openPpt(PptId[index])} className=" border border-primery w-[170px] lg:w-[300px] hover:scale-105 rounded-xl shadow-xl p-4 mt-4 space-y-2" key={index}>
+                {project?.map((items, index)=>(
+                  <Link to={'/work/project/'+items.projectId+"/pptslider" }>
+                  <div className=" border border-primery w-[170px] lg:w-[300px] hover:scale-105 rounded-xl shadow-xl p-4 mt-4 space-y-2" key={index}>
                     <img src={ppt_img} width={100} height={100} />
-                    <h1 className='font-bold text-primery'>{items?.outline[0]?.slidePoint}</h1>
+                    <h1 className='font-bold text-primery'>{items?.userPrompt}</h1>
                     <div className="flex justify-between">
                       <p className='text-sm'>{items?.slides_html?.length>0?`${items?.slides_html?.length}`:"0"} Slides</p>
                     <p className='text-sm'>{PptDate(items?.createdAT)}</p>
                     </div>
                     
                     
-                  </div>
+                  </div></Link>
                 ))}
               </div>
              )
