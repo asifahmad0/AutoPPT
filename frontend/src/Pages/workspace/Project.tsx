@@ -78,7 +78,7 @@ const PptDate=(timeStrap:any)=>{
       {project.length>0? (
               <div className="p-2 lg:p-5 border w-screen grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-5 ">
                 {project.map((items, index)=>(
-                  <div onClick={()=>openPpt(PptId[index])} className=" border rounded-xl shadow-lg p-4 mt-4 space-y-2" key={index}>
+                  <div onClick={()=>openPpt(PptId[index])} className=" rounded-xl shadow-lg p-4 mt-4 space-y-2" key={index}>
                     <img src={ppt_img} width={100} height={100} />
                     <h1 className='font-bold text-primery'>{items?.outline[0]?.slidePoint}</h1>
                     <div className="flex justify-between">
