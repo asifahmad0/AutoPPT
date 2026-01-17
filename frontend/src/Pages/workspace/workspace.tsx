@@ -5,7 +5,8 @@ import { firebaseDb} from "../../../config/FirebaseConfig.ts"
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { UserDetailContext } from '../../../context/UserDetailContext.tsx';
 import PromptBox from '@/components/ui/PromptBox.tsx';
-import Project from './Project.tsx';
+import ProjectSec from './Project.tsx';
+
 
 
 function Workspace() {
@@ -66,7 +67,7 @@ function Workspace() {
         
         { location.pathname === '/work'&& <div>
           <PromptBox/>
-          <Project/>
+          <ProjectSec/>
             </div> }
         
         <Outlet />  {/*for accesing product page becouse product page is a childe of workspace page */}

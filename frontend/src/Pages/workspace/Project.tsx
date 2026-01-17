@@ -23,7 +23,7 @@ import moment from 'moment'
     projectID je use nikalna or store karna lekin url me jobhi id aaye wo route me wahi name
      ho jo yaha useParams ke varieble me he*/}
 
-function Project() {
+function ProjectSec() {
 
   const[project, setProject]= useState<Project[]>([])
   const {user} = useUser()
@@ -130,4 +130,4 @@ const PptDate=(timeStrap:any)=>{
   )
 }
 
-export default Project
+export default ProjectSec

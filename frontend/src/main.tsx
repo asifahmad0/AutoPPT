@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Workspace from "./Pages/workspace/workspace.tsx";
-import Project from "./Pages/workspace/Project.tsx";
 import Header from "./Pages/Header.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import Notfound404 from "./Pages/Notfound404.tsx";
@@ -14,6 +13,7 @@ import Contact from "./Pages/contact/Contact.tsx";
 import Footer from "./Pages/Footer.tsx";
 import About from "./Pages/about/About.tsx";
 import PptSlider from "./Pages/PPTslider/PptSlider.tsx";
+import ProjectSec from "./Pages/workspace/Project.tsx";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "project",
-        element: <Project />,
+        element: <ProjectSec/>
       },
       {
         path: "project/:ProjectID/outline",
