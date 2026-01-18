@@ -29,15 +29,15 @@ const router = createBrowserRouter([
     element: <Workspace />,
     children: [
       {
-        path: "project",
+        path: "/project",
         element: <ProjectSec/>
       },
       {
-        path: "project/:ProjectID/outline",
+        path: "/project/:ProjectID/outline",
         element: <OutlineIndex />,
       },
       {
-        path:'project/:ProjectID/pptslider',
+        path:'/project/:ProjectID/pptslider',
         element: <PptSlider/>
       },
     ],
