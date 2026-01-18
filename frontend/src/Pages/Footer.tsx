@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer className="h-[350px] overflow-hidden bg-black text-white pt-14 pb-8 px-6 md:px-12 lg:px-20 p-2">
+    <footer className=" py-5 overflow-hidden bg-black text-white pt-14 pb-8 px-6 md:px-12 lg:px-20 p-2">
       {/* Top Section */}
       <div
         className="grid grid-cols-1 md:grid-cols-4 gap-10"

@@ -8,7 +8,7 @@ function Home() {
   const {user} = useUser()
 
   return (
-    <div className='main w-full min-h-screen 
+    <div className='main w-full min-h-screen p-3 
     flex flex-col items-center justify-center text-center gap-5 font-[monospace]'>
         <div className="header">
             <h1 className='font-bold text-[2em] md:text-[3em] lg:text-[3.5em]'>
