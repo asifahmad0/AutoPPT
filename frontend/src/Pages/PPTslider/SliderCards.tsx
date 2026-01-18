@@ -52,7 +52,7 @@ function SliderCards({slide,colors }:Props) {
         <div className='mb-5'>
             <iframe
                 ref={iframeRef}
-                className="lg:w-[68dvw] w-[100dvw] lg:h-[600px] mt-2 rounded-2xl"
+                className=" border-[2px] border-primery lg:w-[1200px] w-[800px] h-[600px] mt-2 rounded-2xl"
                 sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups" // ✅ full sandbox permissions 
                  />
         </div>
