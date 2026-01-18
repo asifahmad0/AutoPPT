@@ -1,16 +1,15 @@
 import { firebaseDb } from "../../../config/FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { Project, Outline } from "../outline/Outline";
 import OutlineSection from "../outline/OutlineSection";
-import SliderCards from "./SliderCards";
+const SliderCards = lazy(() => import("./SliderCards"));
 import { Button } from "@/components/ui/button";
-import {  Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import PptxGenJS from "pptxgenjs";
-import * as htmlToImage from 'html-to-image';
+import * as htmlToImage from "html-to-image";
 import PptSlideSkeleton from "./PptSlideSkeleton";
-
 
 
 function PptSlider() {
@@ -19,11 +18,8 @@ function PptSlider() {
   const [loading, setLoding] = useState(false);
   const [outline, setOutline] = useState<Outline[]>();
   const [genratePPTLoding, setGenratePPTLoding] = useState(false);
-  const [sliderSaveLoder, setSliderSaveLoder]= useState( false)
+  const [sliderSaveLoder, setSliderSaveLoder] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
-
-
-
 
   //-------------------------------------------------------------------------------Getting project data from firebase
   useEffect(() => {
@@ -32,7 +28,6 @@ function PptSlider() {
 
   const getProject = async () => {
     setLoding(true);
-    
 
     const docRef = doc(firebaseDb, "projects", ProjectID ?? "");
     const docSnap: any = await getDoc(docRef);
@@ -51,47 +46,42 @@ function PptSlider() {
 
     setLoding(false);
   };
-  
 
-  
-
-
-
-//---------------------------------------------------------for generate slide by sending slide data to backend  
-const [slider, setSlider] = useState<any>([]);
-
-  
+  //---------------------------------------------------------for generate slide by sending slide data to backend
+  const [slider, setSlider] = useState<any>([]);
 
   useEffect(() => {
-  const slidaar = projectDetail?.slides_html;
+    const slidaar = projectDetail?.slides_html;
 
-  if (!slidaar || slidaar.length === 0) {
-    GenerateSlide();
-  } else {
-    setSlider(
-      slidaar
-    );
-    
-  }
-}, [projectDetail]);
+    if (!slidaar || slidaar.length === 0) {
+      GenerateSlide();
+    } else {
+      setSlider(slidaar);
+    }
+  }, [projectDetail]);
 
-
-const GenerateSlide = async () => {
+  const GenerateSlide = async () => {
     if (!projectDetail?.outline?.length) return;
 
     setGenratePPTLoding(true);
 
+    
+
     try {
-      const res = await fetch(import.meta.env.VITE_BACKEND_URL+"generate-presentation", { //https://autoppt-iain.onrender.com/
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          designStyle: projectDetail.designStyle?.designGuide,
-          colors: projectDetail.designStyle?.color,
-          outline: projectDetail.outline,
-          userPrompt: projectDetail.userPrompt,
-        }),
-      });
+      const res = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "generate-presentation",
+        {
+          //https://autoppt-iain.onrender.com/
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            designStyle: projectDetail.designStyle?.designGuide,
+            colors: projectDetail.designStyle?.color,
+            outline: projectDetail.outline,
+            userPrompt: projectDetail.userPrompt,
+          }),
+        },
+      );
 
       if (!res.ok) {
         const err = await res.text();
@@ -107,101 +97,89 @@ const GenerateSlide = async () => {
       }
 
       const slidesData = data.slides.map((s: any) => ({
-      code: s.html,
-      title: s.title,
-    }));
+        code: s.html,
+        title: s.title,
+      }));
 
-    // ✅ UI ke liye
-    setSlider(slidesData);
+      // ✅ UI ke liye
+      setSlider(slidesData);
 
-    // ✅ DIRECT Firebase save (no timing issue)
-    await saveSlideToFirebase(slidesData);
+      // ✅ DIRECT Firebase save (no timing issue)
+      await saveSlideToFirebase(slidesData);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setGenratePPTLoding(false);
+      setIsRegenerating(false);
+    }
+  };
 
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setGenratePPTLoding(false);
-    setIsRegenerating(false);
-  }
-};
+  const handleRegenerate = () => {
+    setIsRegenerating(true);
+    GenerateSlide();
+  };
 
- 
-const handleRegenerate = () => {
-  setIsRegenerating(true);
-  GenerateSlide();
-};
-
-
-
-// ----------------------------------------------------------- Slide save to firebase ---------------------------------------
+  // ----------------------------------------------------------- Slide save to firebase ---------------------------------------
 
   const saveSlideToFirebase = async (slidesData: any[]) => {
-
-    setSliderSaveLoder(true)
-    try{
+    setSliderSaveLoder(true);
+    try {
       const docRef = doc(firebaseDb, "projects", ProjectID!);
 
-  await setDoc(docRef, {
-    [`slides_html`]: slidesData,
-    updatedAt: Date.now(),
-  },{
-    merge:true
-  });
-
-  
-    } catch(e){
-         console.log("error: ", e)
+      await setDoc(
+        docRef,
+        {
+          [`slides_html`]: slidesData,
+          updatedAt: Date.now(),
+        },
+        {
+          merge: true,
+        },
+      );
+    } catch (e) {
+      console.log("error: ", e);
     }
     setSliderSaveLoder(false);
-  
-};
+  };
 
+  //-------------------------------------------------------------Export PPT-------------------------------------------------------
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [downloadLoding, setDownloadLoding] = useState(false);
 
+  const exportPPT = async () => {
+    if (!containerRef.current) return;
+    setDownloadLoding(true);
+    const pptx = new PptxGenJS();
+    const iframes = containerRef.current.querySelectorAll("iframe");
+    console.log(iframes);
+    for (let i = 0; i < iframes.length; i++) {
+      const iframe = iframes[i] as HTMLIFrameElement;
+      const iframeDoc =
+        iframe.contentDocument || iframe.contentWindow?.document;
+      if (!iframeDoc) continue;
 
+      const slideNode =
+        (iframeDoc.querySelector("body > div") as HTMLElement) ||
+        (iframeDoc.body as HTMLElement);
+      if (!slideNode) continue;
+      //console.log(`Exporting slide ${i + 1}...`);
+      const dataUrl = await htmlToImage.toPng(slideNode, { quality: 1 });
 
-//-------------------------------------------------------------Export PPT-------------------------------------------------------
+      const slide = pptx.addSlide();
+      slide.addImage({
+        data: dataUrl,
+        x: 0,
+        y: 0,
+        w: 10,
+        h: 5.625,
+      });
+      console.log(slide);
+    }
 
-const containerRef = useRef<HTMLDivElement | null>(null)
-const [downloadLoding, setDownloadLoding] = useState(false)
-
-const exportPPT= async()=> {
-  
-  if (!containerRef.current) return;
-  setDownloadLoding(true)
-  const pptx = new PptxGenJS()
-  const iframes =containerRef.current.querySelectorAll("iframe")
-  console.log(iframes)
-  for (let i =0; i<iframes.length; i++){
-    const iframe = iframes[i] as HTMLIFrameElement;
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-    if (!iframeDoc) continue;
-
-    const slideNode = 
-    (iframeDoc.querySelector("body > div") as HTMLElement) || (iframeDoc.body as HTMLElement);
-    if (!slideNode) continue;
-    console.log(`Exporting slide ${i + 1}...`);
-    const dataUrl = await htmlToImage.toPng(slideNode, {quality:1})
-
-    const slide = pptx.addSlide()
-    slide.addImage({
-      data: dataUrl,
-      x: 0,
-      y: 0,
-      w: 10,
-      h: 5.625,
-    });
-    console.log(slide)
-  }
-  
-  setDownloadLoding(false)
-  pptx.writeFile({fileName:"MyProjectPPT.pptx"})
-}
-
-
-
-
-
+    setDownloadLoding(false);
+    pptx.writeFile({ fileName: "MyProjectPPT.pptx" });
+  };
 
   return (
     <div className=" w-full flex lg:flex-row flex-col p-5 ">
@@ -213,47 +191,48 @@ const exportPPT= async()=> {
         />
       </div>
 
-      <div className="lg:w-[70dvw] w-[100dvw] h-screen overflow-scroll p-2 " ref={containerRef}>
-        { genratePPTLoding? (
-    Array.from({ length: 5 }).map((_, i) => (
-      <PptSlideSkeleton key={i} />
-    ))
-  ) :(slider.map((slide: any, index: number) => (
-          <SliderCards
-            key={index}
-            slide={slide}
-            colors={projectDetail?.designStyle?.color ?? {}}
-          />
-        )))}
+      <div
+        className="lg:w-[70dvw] w-[100dvw] h-screen overflow-scroll p-2 "
+        ref={containerRef}
+      >
+        {genratePPTLoding ? (<div className="text-center w-full">
+        <p className="text-mf text-primery font-bold z-[9999] py-2">  Slides are being generated, this may take 10–20 seconds… </p>
+           {[1,2,3,4,5].map((_, i) => ( <PptSlideSkeleton key={i} />))}</div>
+           )
+          : slider.map((slide: any, index: number) => (
+              <Suspense fallback={<PptSlideSkeleton />}>
+                <SliderCards
+                  key={index}
+                  slide={slide}
+                  colors={projectDetail?.designStyle?.color ?? {}}
+                />
+              </Suspense>
+            ))}
       </div>
 
-       <div className="btn sticky -bottom-30 flex items-center justify-center bg-background gap-10 ">
+      <div className="btn absolute -bottom-17 left-[40%] flex items-center justify-center bg-background gap-10 ">
         <Button
-           className=" bg-primery text-textColor hover:scale-105"
-           onClick={
-             slider?.length > 0
-               ? handleRegenerate
-               : GenerateSlide
-           }
-           disabled={genratePPTLoding || sliderSaveLoder} >
-
-           {genratePPTLoding ? ( <Loader2 className="animate-spin" />) 
-           : slider?.length > 0 ? ("Regenerate PPT") 
-           : ( "Generate PPT")}
+          className=" bg-primery text-textColor hover:scale-105"
+          onClick={slider?.length > 0 ? handleRegenerate : GenerateSlide}
+          disabled={genratePPTLoding || sliderSaveLoder}
+        >
+          {genratePPTLoding ? (
+            <Loader2 className="animate-spin" />
+          ) : ( "Regenerate PPT" )}
         </Button>
 
-
         <Button
-               className=" border border-primery text-textColor2 hover:scale-105 hover:bg-primery hover:text-textColor"
-               onClick={exportPPT}
-               disabled={sliderSaveLoder}>
-               {downloadLoding ? ( <Loader2 className="animate-spin" /> ) : ( "Download PPT" )} 
+          className=" border border-primery text-textColor2 hover:scale-105 hover:bg-primery hover:text-textColor"
+          onClick={exportPPT}
+          disabled={sliderSaveLoder}
+        >
+          {downloadLoding ? (
+            <Loader2 className="animate-spin w-10 h-10 text-textColor2" />
+          ) : (
+            "Download PPT"
+          )}
         </Button>
-
-        
-       
-       </div>
-       
+      </div>
     </div>
   );
 }
