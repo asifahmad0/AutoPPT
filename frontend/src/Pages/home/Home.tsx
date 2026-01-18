@@ -11,7 +11,7 @@ function Home() {
     <div className='main w-full min-h-screen  
     flex flex-col items-center justify-center text-center gap-5 font-[monospace]'>
         <div className="header">
-            <h1 className='font-bold text-[2em] md:text-[3em] lg:text-[3.5em] px-2'>
+            <h1 className='font-bold text-[3em] md:text-[3em] lg:text-[3.5em] px-2'>
                 From Idea to <span className='text-[crimson]'>Presentation</span> <br/>In One Click</h1>
         </div>
 
