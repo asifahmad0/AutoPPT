@@ -196,7 +196,7 @@ function PptSlider() {
         ref={containerRef}
       >
         {genratePPTLoding ? (<div className="text-center w-full">
-        <p className="text-mf text-primery font-bold z-[9999] py-2">  Slides are being generated, this may take 10–20 seconds… </p>
+        <p className="text-mf text-primery font-bold z-[9999] py-2">  Slides are being generated, this may take 30–60 seconds… </p>
            {[1,2,3,4,5].map((_, i) => ( <PptSlideSkeleton key={i} />))}</div>
            )
           : slider.map((slide: any, index: number) => (
