@@ -183,7 +183,7 @@ function PptSlider() {
 
   return (
     <div className=" w-full flex lg:flex-row flex-col p-5 ">
-      <div className=" lg:w-[30dvw] h-screen overflow-y-scroll p-2 -my-10">
+      <div className=" lg:w-[25dvw] h-screen overflow-y-scroll p-2 -my-10">
         <OutlineSection
           outline={projectDetail?.outline ?? []}
           hendleUpdateOutline={() => console.log("its working")}
