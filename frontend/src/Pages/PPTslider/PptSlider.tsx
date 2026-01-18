@@ -227,7 +227,7 @@ const exportPPT= async()=> {
         )))}
       </div>
 
-       <div className="btn absolute -bottom-30 left-[40%]  flex items-center gap-10 ">
+       <div className="btn sticky -bottom-30 flex items-center justify-center bg-background gap-10 ">
         <Button
            className=" bg-primery text-textColor hover:scale-105"
            onClick={

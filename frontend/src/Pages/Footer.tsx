@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
             <li className="hover:text-white cursor-pointer transition"><a href="/">Home</a></li>
             <li className="hover:text-white cursor-pointer transition"><a href="/about">About</a></li>
             <li className="hover:text-white cursor-pointer transition"><a href="/work">Workspace</a></li>
-            <li className="hover:text-white cursor-pointer transition"><a href="/project">Project</a></li>
+            <li className="hover:text-white cursor-pointer transition"><a href="/work/project">Project</a></li>
             <li className="hover:text-white cursor-pointer transition"><a href="/contact">Contact</a></li>
           </ul>
         </div>
