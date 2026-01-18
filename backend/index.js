@@ -37,6 +37,7 @@ app.post("/generate-presentation", async (req, res) => {
 You are a professional presentation + web designer.
 
 Generate a presentation with EXACTLY ${outline.length} slides.
+mack sure ppt size width=1300px and height=600px
 
 Generate pure HTML with inline CSS only.
 Do NOT use:
@@ -58,6 +59,8 @@ Rules:
 - Modern dark/light UI
 - Consistent width & height for ALL slides
 - Return ONLY valid JSON
+- width = 1300px
+- height = 600px 
 
 
 Design style:
