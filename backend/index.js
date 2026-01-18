@@ -59,8 +59,6 @@ Rules:
 - Modern dark/light UI
 - Consistent width & height for ALL slides
 - Return ONLY valid JSON
-- width = 1000px
-- height = 600px 
 
 
 Design style:
