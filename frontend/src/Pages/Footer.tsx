@@ -87,7 +87,7 @@ const Footer: React.FC = () => {
       <div
         className="border-t border-red-800 mt-10 pt-5 text-center text-gray-400 text-sm">
           
-        © {new Date().getFullYear()} YourBrand — All Rights Reserved.
+        © {new Date().getFullYear()} Asif Ahmad — All Rights Reserved.
       </div>
     </footer>
   );
