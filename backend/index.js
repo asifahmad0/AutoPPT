@@ -37,7 +37,7 @@ app.post("/generate-presentation", async (req, res) => {
 You are a professional presentation + web designer.
 
 Generate a presentation with EXACTLY ${outline.length} slides.
-mack sure ppt size
+mack sure ppt size and dont use paddinig on section tad
 
 Generate pure HTML with inline CSS only.
 Do NOT use:
@@ -46,6 +46,11 @@ Do NOT use:
 - AOS
 - External CSS
 - External fonts
+
+CRITICAL RULE:
+- If padding is used, MUST apply box-sizing: border-box
+- Section element size must NEVER exceed 1024x576 including padding
+- Always use box-sizing: border-box on <section>
 
 Rules:
 - Output ONLY valid JSON
