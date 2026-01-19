@@ -11,7 +11,7 @@ function Header() {
 
   return (
     <div>
-        <div className="nav fixed bg-white shadow h-[50px] w-full flex flex-nowrap items-center justify-between px-3 lg:px-3">
+        <div className="nav fixed bg-white shadow h-[50px] w-full flex flex-nowrap items-center justify-between px-3 lg:px-3 z-[99999999]">
             <div className="font-bold text-[1.2] text-[2em] min-w-max ml-2 font-[monospace]"><span className='text-[crimson] '>Auto</span>PPT</div>
             <div className='hidden md:block min-w-max'>
               <ul className='flex gap-2 lg:gap-10'>

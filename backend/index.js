@@ -49,6 +49,8 @@ Do NOT use:
 
 Rules:
 - Output ONLY valid JSON
+- width: 1024 pixel
+- height: 576 pixel
 - Each slide must contain:
   - id
   - title
