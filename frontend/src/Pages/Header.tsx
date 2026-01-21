@@ -29,7 +29,7 @@ function Header() {
              </SignInButton>
              : <div className=" flex flex-nowrap items-center gap-2 font-bold">
                  <UserButton/>
-                 <div className="flex items-center bg-[antiquewhite] p-[7px] rounded-xl text-[1.2em] gap-1"><Gem/>{userDetail?.credit} </div>
+                 {/* <div className="flex items-center bg-[antiquewhite] p-[7px] rounded-xl text-[1.2em] gap-1"><Gem/>{userDetail?.credit} </div> */}
              </div>            
             } 
 
